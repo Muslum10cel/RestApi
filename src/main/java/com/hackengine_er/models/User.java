@@ -19,9 +19,8 @@ public class User {
     public User() {
     }
 
-    public User(String emailOrUser) {
-        this.email = emailOrUser;
-        //this.username = emailOrUser;
+    public User(String email) {
+        this.email = email;
     }
 
     public User(String username, String password) {
@@ -30,10 +29,6 @@ public class User {
         this.verificationCode = password;
     }
 
-//    public User(String username, int verificationCode) {
-//        this.username = username;
-//        this.verificationCode = verificationCode;
-//    }
     public User(String username, String password, String fullname, String email) {
         this.username = username;
         this.password = password;
