@@ -7,10 +7,13 @@ package com.hackengine_er;
 
 import com.hackengine.models.AddBabyResponse;
 import com.hackengine.models.Baby;
+import com.hackengine.models.Comment;
 import com.hackengine.models.LogInResponse;
 import com.hackengine.models.User;
 import com.hackengine.models.RegisterUserResponse;
+import com.hackengine.models.Vaccine;
 import com.hackengine.muslumyusuf.DBOperations;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -46,7 +49,10 @@ public class ApiOperations {
         return new AddBabyResponse(dbOperations.addBaby(baby));
     }
 
-    
-    
-    
+    @POST
+    @Path("/getComments")
+    public List<Comment> getComments(Vaccine vaccine) {
+        return dbOperations.getComments(vaccine);
+    }
+
 }

@@ -8,8 +8,10 @@ package com.hackengine.muslumyusuf;
 import com.hackengine.initialize.GenerateVerificationCode;
 import com.hackengine.initialize.Configuration;
 import com.hackengine.models.Baby;
+import com.hackengine.models.Comment;
 import com.hackengine.models.Image;
 import com.hackengine.models.User;
+import com.hackengine.models.Vaccine;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.io.ByteArrayInputStream;
@@ -25,9 +27,11 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -608,40 +612,33 @@ public class DBOperations {
     /**
      * Gets comments written by users
      *
-     * @param vaccine_name
-     * @param beginning first index of comments
-     * @param end last index of comments
+     * @param vaccine
      * @return an object includes comments or null if catches SQLException or
      * JSONException
      */
-//    public synchronized JSONObject getComments(String vaccine_name, int beginning, int end) {
-//        JSONObject object = new JSONObject();
-//        JSONArray jSONArray = new JSONArray();
-//        try {
-//            establishConnection();
-//            callableStatement = connection.prepareCall(DbStoredProcedures.GET_COMMENTS);
-//            callableStatement.setString(1, vaccine_name);
-//            callableStatement.setInt(2, beginning);
-//            callableStatement.setInt(3, end);
-//            resultSet = callableStatement.executeQuery();
-//            if (!Objects.equals(resultSet, null)) {
-//                while (resultSet.next()) {
-//                    JSONObject jSONObject = new JSONObject();
-//                    jSONObject.put(Tags.USERNAME, resultSet.getString(1));
-//                    jSONObject.put(Tags.VACCINE_NAME, resultSet.getString(2));
-//                    jSONObject.put(Tags.COMMENT, resultSet.getString(3));
-//                    jSONObject.put(Tags.COMMENT_DATE, resultSet.getDate(4));
-//                    jSONArray.put(jSONObject);
-//                }
-//            }
-//            return object.put(Tags.COMMENTS, jSONArray);
-//        } catch (SQLException | JSONException ex) {
-//            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            closeEverything();
-//        }
-//        return null;
-//    }
+    public synchronized List<Comment> getComments(Vaccine vaccine) {
+        List<Comment> comments = new ArrayList<>();
+        try {
+            establishConnection();
+            callableStatement = connection.prepareCall(DbStoredProcedures.GET_COMMENTS);
+            callableStatement.setString(1, vaccine.getVaccine_name());
+            callableStatement.setInt(2, vaccine.getBegin());
+            callableStatement.setInt(3, vaccine.getLast());
+            resultSet = callableStatement.executeQuery();
+            if (!Objects.equals(resultSet, null)) {
+                while (resultSet.next()) {
+                    comments.add(new Comment(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDate(4)));
+                }
+            }
+            return comments;
+        } catch (SQLException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeEverything();
+        }
+        return null;
+    }
+
     /**
      * Gets babies of logged in user
      *
