@@ -16,6 +16,7 @@ import com.hackengine.models.LogInResponse;
 import com.hackengine.models.PasswordUpdateResponse;
 import com.hackengine.models.RegisterUserResponse;
 import com.hackengine.models.SendMailResponse;
+import com.hackengine.models.UploadImageResponse;
 import com.hackengine.models.User;
 import com.hackengine.models.Vaccine;
 import com.hackengine.models.VaccineDateResponse;
@@ -1090,23 +1091,22 @@ public class DBOperations {
      * @param image
      * @return
      */
-    public synchronized int uploadImage(Image image) {
+    public synchronized UploadImageResponse uploadImage(Image image) {
         try {
             byte[] imageBytes = Base64.getDecoder().decode(image.getBase64());
             if (!uploadToFTP(image.getUsername(), image.getFilename(), new ByteArrayInputStream(imageBytes))) {
-                return -2;
+                return new UploadImageResponse(-2);
             }
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.UPDATE_IMAGE);
             callableStatement.setString(1, Configuration.imageFTPPath() + image.getUsername() + Tags.IMAGE_PREFIX + image.getFilename());
             callableStatement.setString(2, image.getUsername());
-            return callableStatement.executeUpdate();
+            return new UploadImageResponse(callableStatement.executeUpdate());
         } catch (SQLException e) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, e);
+            return new UploadImageResponse(e);
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     private boolean uploadToFTP(String username, String fileName, InputStream inputStream) {
