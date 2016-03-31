@@ -63,4 +63,10 @@ public class ApiOperations {
         return dbOperations.getBabies(user);
     }
 
+    @GET
+    @Path("/getAllVaccineNames")
+    public List<Vaccine> getAllVaccineNames() {
+        return dbOperations.getAllVaccineNames();
+    }
+
 }

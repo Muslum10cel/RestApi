@@ -935,28 +935,26 @@ public class DBOperations {
      * @return an object added vaccine names, null if catches SQLException or
      * JSONException
      */
-//    public JSONObject getAllVaccineNames() {
-//        JSONObject jSONObject = new JSONObject();
-//        JSONArray array = new JSONArray();
-//        try {
-//            establishConnection();
-//            callableStatement = connection.prepareCall(DbStoredProcedures.GET_ALL_VACCINE_NAMES);
-//            resultSet = callableStatement.executeQuery();
-//            if (!Objects.equals(resultSet, null)) {
-//                while (resultSet.next()) {
-//                    JSONObject temp = new JSONObject();
-//                    temp.put("Vaccine name", resultSet.getString(1));
-//                    array.put(temp);
-//                }
-//            }
-//            return jSONObject.put("Vaccines", array);
-//        } catch (SQLException | JSONException ex) {
-//            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            closeEverything();
-//        }
-//        return null;
-//    }
+    public List<Vaccine> getAllVaccineNames() {
+        List<Vaccine> vaccines = new ArrayList<>();
+        try {
+            establishConnection();
+            callableStatement = connection.prepareCall(DbStoredProcedures.GET_ALL_VACCINE_NAMES);
+            resultSet = callableStatement.executeQuery();
+            if (!Objects.equals(resultSet, null)) {
+                while (resultSet.next()) {
+                    vaccines.add(new Vaccine(resultSet.getString(1)));
+                }
+            }
+            return vaccines;
+        } catch (SQLException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeEverything();
+        }
+        return null;
+    }
+
     /**
      * Gets vaccine details of desired baby
      *

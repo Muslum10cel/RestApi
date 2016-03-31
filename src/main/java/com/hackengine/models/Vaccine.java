@@ -17,6 +17,10 @@ public class Vaccine {
     private String vaccine_name;
     private int begin, last;
 
+    public Vaccine(String vaccine_name) {
+        this.vaccine_name = vaccine_name;
+    }
+
     public Vaccine(String vaccine_name, int begin, int last) {
         this.vaccine_name = vaccine_name;
         this.begin = begin;
