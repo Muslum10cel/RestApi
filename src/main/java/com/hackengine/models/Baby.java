@@ -5,6 +5,7 @@
  */
 package com.hackengine.models;
 
+import java.sql.SQLException;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -16,8 +17,13 @@ public class Baby {
 
     private String username, baby_name, date_of_birth;
     private int babyID, vaccineFlag;
+    private SQLException exception;
 
     public Baby() {
+    }
+
+    public Baby(SQLException exception) {
+        this.exception = exception;
     }
 
     public Baby(int babyID, int vaccineFlag) {
@@ -74,5 +80,13 @@ public class Baby {
 
     public void setVaccineFlag(int vaccineFlag) {
         this.vaccineFlag = vaccineFlag;
+    }
+
+    public SQLException getException() {
+        return exception;
+    }
+
+    public void setException(SQLException exception) {
+        this.exception = exception;
     }
 }

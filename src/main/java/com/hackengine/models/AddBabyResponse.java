@@ -5,6 +5,7 @@
  */
 package com.hackengine.models;
 
+import java.sql.SQLException;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,11 +15,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class AddBabyResponse {
 
+    private String exception;
     private int add_baby_response;
 
     public AddBabyResponse() {
     }
 
+    public AddBabyResponse(String exception) {
+        this.exception=exception;
+    }
+    
     public AddBabyResponse(int add_baby_response) {
         this.add_baby_response = add_baby_response;
     }
@@ -31,4 +37,11 @@ public class AddBabyResponse {
         this.add_baby_response = add_baby_response;
     }
 
+    public String getException() {
+        return exception;
+    }
+
+    public void setException(String exception) {
+        this.exception = exception;
+    }
 }

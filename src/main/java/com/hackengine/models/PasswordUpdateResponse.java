@@ -13,28 +13,28 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author muslumoncel
  */
 @XmlRootElement
-public class RegisterUserResponse {
+public class PasswordUpdateResponse {
 
-    private int register_response;
+    private int password_update_response;
     private SQLException exception;
-    
-    public RegisterUserResponse() {
-    }
-    
-    public RegisterUserResponse(SQLException exception){
-        this.exception=exception;
-    } 
 
-    public RegisterUserResponse(int response) {
-        this.register_response = response;
+    public PasswordUpdateResponse() {
     }
 
-    public int getRegister_response() {
-        return register_response;
+    public PasswordUpdateResponse(SQLException exception) {
+        this.exception = exception;
     }
 
-    public void setRegister_response(int register_response) {
-        this.register_response = register_response;
+    public PasswordUpdateResponse(int password_update_response) {
+        this.password_update_response = password_update_response;
+    }
+
+    public int getPassword_update_response() {
+        return password_update_response;
+    }
+
+    public void setPassword_update_response(int password_update_response) {
+        this.password_update_response = password_update_response;
     }
 
     public SQLException getException() {

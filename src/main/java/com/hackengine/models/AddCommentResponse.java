@@ -13,28 +13,28 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author muslumoncel
  */
 @XmlRootElement
-public class RegisterUserResponse {
+public class AddCommentResponse {
 
-    private int register_response;
+    private int add_comment_status;
     private SQLException exception;
-    
-    public RegisterUserResponse() {
-    }
-    
-    public RegisterUserResponse(SQLException exception){
-        this.exception=exception;
-    } 
 
-    public RegisterUserResponse(int response) {
-        this.register_response = response;
+    public AddCommentResponse(int add_comment_status) {
+        this.add_comment_status = add_comment_status;
     }
 
-    public int getRegister_response() {
-        return register_response;
+    public AddCommentResponse(SQLException exception) {
+        this.exception = exception;
     }
 
-    public void setRegister_response(int register_response) {
-        this.register_response = register_response;
+    public AddCommentResponse() {
+    }
+
+    public int getAdd_comment_status() {
+        return add_comment_status;
+    }
+
+    public void setAdd_comment_status(int add_comment_status) {
+        this.add_comment_status = add_comment_status;
     }
 
     public SQLException getException() {

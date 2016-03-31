@@ -6,6 +6,7 @@
 package com.hackengine.muslumyusuf;
 
 import com.hackengine.initialize.InitProperties;
+import com.hackengine.models.SendMailResponse;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +39,7 @@ public class SendMail {
         properties = InitProperties.getProperties();
     }
 
-    public int sendMailTo(String receiver, String code) {
+    public SendMailResponse sendMailTo(String receiver, String code) {
         session = Session.getInstance(properties, new javax.mail.Authenticator() {
             @Override
             protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
@@ -54,10 +55,9 @@ public class SendMail {
             message.setSubject(Tags.VERIFY);
             message.setText(Tags.VERIFICATION_CODE + code);
             Transport.send(message);
-            return 10;
+            return new SendMailResponse(10);
         } catch (MessagingException e) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, e);
+            return new SendMailResponse(e);
         }
-        return -2;
     }
 }

@@ -22,6 +22,7 @@ public class User {
 
     public User(String emailOrUser) {
         this.email = emailOrUser;
+        //this.username = emailOrUser;
     }
 
     public User(String username, String password) {

@@ -13,28 +13,28 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author muslumoncel
  */
 @XmlRootElement
-public class RegisterUserResponse {
+public class VaccineUpdateResponse {
 
-    private int register_response;
+    private int vaccine_update_response;
     private SQLException exception;
-    
-    public RegisterUserResponse() {
-    }
-    
-    public RegisterUserResponse(SQLException exception){
-        this.exception=exception;
-    } 
 
-    public RegisterUserResponse(int response) {
-        this.register_response = response;
+    public VaccineUpdateResponse() {
     }
 
-    public int getRegister_response() {
-        return register_response;
+    public VaccineUpdateResponse(SQLException exception) {
+        this.exception = exception;
     }
 
-    public void setRegister_response(int register_response) {
-        this.register_response = register_response;
+    public VaccineUpdateResponse(int vaccine_update_response) {
+        this.vaccine_update_response = vaccine_update_response;
+    }
+
+    public int getVaccine_update_response() {
+        return vaccine_update_response;
+    }
+
+    public void setVaccine_update_response(int vaccine_update_response) {
+        this.vaccine_update_response = vaccine_update_response;
     }
 
     public SQLException getException() {
@@ -44,4 +44,5 @@ public class RegisterUserResponse {
     public void setException(SQLException exception) {
         this.exception = exception;
     }
+
 }

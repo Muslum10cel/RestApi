@@ -5,6 +5,7 @@
  */
 package com.hackengine.models;
 
+import java.sql.SQLException;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,9 +15,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class LogInResponse {
 
+    private SQLException exception;
     private byte log_level;
-    
+    private int user_not_available;
+
     public LogInResponse() {
+    }
+
+    public LogInResponse(int user_not_available) {
+        this.user_not_available = user_not_available;
+    }
+
+    public LogInResponse(SQLException exception) {
+        this.exception = exception;
     }
 
     public LogInResponse(byte log_level) {
@@ -29,5 +40,21 @@ public class LogInResponse {
 
     public void setLog_level(byte log_level) {
         this.log_level = log_level;
+    }
+
+    public SQLException getException() {
+        return exception;
+    }
+
+    public void setException(SQLException exception) {
+        this.exception = exception;
+    }
+
+    public int getUser_not_available() {
+        return user_not_available;
+    }
+
+    public void setUser_not_available(int user_not_available) {
+        this.user_not_available = user_not_available;
     }
 }

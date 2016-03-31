@@ -7,13 +7,20 @@ package com.hackengine.muslumyusuf;
 
 import com.hackengine.initialize.GenerateVerificationCode;
 import com.hackengine.initialize.Configuration;
+import com.hackengine.models.AddBabyResponse;
+import com.hackengine.models.AddCommentResponse;
 import com.hackengine.models.Baby;
 import com.hackengine.models.Comment;
 import com.hackengine.models.Image;
+import com.hackengine.models.LogInResponse;
+import com.hackengine.models.PasswordUpdateResponse;
+import com.hackengine.models.RegisterUserResponse;
+import com.hackengine.models.SendMailResponse;
 import com.hackengine.models.User;
 import com.hackengine.models.Vaccine;
 import com.hackengine.models.VaccineDateResponse;
 import com.hackengine.models.VaccineStatusResponse;
+import com.hackengine.models.VaccineUpdateResponse;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.io.ByteArrayInputStream;
@@ -89,8 +96,8 @@ public class DBOperations {
      * @param registerUser
      * @return Registration is successful or failed
      */
-    public synchronized int register(User registerUser) {
-        int userAvailable = 0, registered = -1;
+    public synchronized RegisterUserResponse register(User registerUser) {
+        int userAvailable = 0;
         try {
             establishConnection();
             preparedStatement = connection.prepareStatement(DbFunctions.CHECK_USER_FUNCTION);
@@ -110,16 +117,16 @@ public class DBOperations {
                 preparedStatement.setInt(4, Flags.USER_FLAG);
                 preparedStatement.setString(5, registerUser.getEmail());
                 preparedStatement.executeQuery();
-                registered = 2;
+                return new RegisterUserResponse(2);
             } else {
-                return userAvailable;
+                return new RegisterUserResponse(userAvailable);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new RegisterUserResponse(ex);
         } finally {
             closeEverything();
         }
-        return registered;
     }
 
     /**
@@ -129,7 +136,7 @@ public class DBOperations {
      * @param logUser
      * @return Log-in successful or failed
      */
-    public synchronized byte logIn(User logUser) {
+    public synchronized LogInResponse logIn(User logUser) {
         int userAvailable = 0;
         try {
             establishConnection();
@@ -148,18 +155,18 @@ public class DBOperations {
                 resultSet = preparedStatement.executeQuery();
                 if (!Objects.equals(resultSet, null)) {
                     while (resultSet.next()) {
-                        return resultSet.getByte(1);
+                        return new LogInResponse(resultSet.getByte(1));
                     }
                 }
             } else {
-                return -2;
+                return new LogInResponse(-2);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new LogInResponse(ex);
         } finally {
             closeEverything();
         }
-        return -1;
+        return new LogInResponse(-1);
     }
 
     /**
@@ -169,7 +176,7 @@ public class DBOperations {
      * @return 1 for successfully
      *
      */
-    public synchronized int addBaby(Baby baby) {
+    public synchronized AddBabyResponse addBaby(Baby baby) {
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.ADD_BABY);
@@ -205,13 +212,12 @@ public class DBOperations {
             callableStatement.executeUpdate();
 
             callableStatement = connection.prepareCall(DbStoredProcedures.SET_FALSE_ALL_VACCINES_STATUS);
-            return callableStatement.executeUpdate();
+            return new AddBabyResponse(callableStatement.executeUpdate());
         } catch (SQLException | ParseException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new AddBabyResponse(ex.toString());
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     /**
@@ -221,7 +227,7 @@ public class DBOperations {
      * @return 1 updated, 0 not updated, -2 flag is not correct, -1 if catches
      * SQLException
      */
-    public synchronized int update_DaBT_IPA_HIB(Baby baby) {
+    public synchronized VaccineUpdateResponse update_DaBT_IPA_HIB(Baby baby) {
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.UPDATE_DaBT_IPA_HIB);
@@ -246,16 +252,14 @@ public class DBOperations {
                     callableStatement.setInt(2, Flags.SIX_FLAG);
                     break;
                 default:
-                    return -2;
+                    return new VaccineUpdateResponse(-2);
             }
-            return callableStatement.executeUpdate();
+            return new VaccineUpdateResponse(callableStatement.executeUpdate());
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new VaccineUpdateResponse(ex);
         } finally {
             closeEverything();
         }
-
-        return -1;
     }
 
     /**
@@ -265,7 +269,7 @@ public class DBOperations {
      * @return 1 updated, 0 not updated, -2 flag is not correct, -1 if catches
      * SQLException
      */
-    public synchronized int update_Hepatit_A(Baby baby) {
+    public synchronized VaccineUpdateResponse update_Hepatit_A(Baby baby) {
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.UPDATE_HEPATIT_A);
@@ -278,15 +282,14 @@ public class DBOperations {
                     callableStatement.setInt(2, Flags.TWO_FLAG);
                     break;
                 default:
-                    return -2;
+                    return new VaccineUpdateResponse(-2);
             }
-            return callableStatement.executeUpdate();
+            return new VaccineUpdateResponse(callableStatement.executeUpdate());
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new VaccineUpdateResponse(ex);
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     /**
@@ -296,7 +299,7 @@ public class DBOperations {
      * @return 1 updated, 0 not updated, -2 flag is not correct, -1 if catches
      * SQLException
      */
-    public synchronized int update_Hepatit_B(Baby baby) {
+    public synchronized VaccineUpdateResponse update_Hepatit_B(Baby baby) {
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.UPDATE_HEPATIT_B);
@@ -312,15 +315,14 @@ public class DBOperations {
                     callableStatement.setInt(2, Flags.THREE_FLAG);
                     break;
                 default:
-                    return -2;
+                    return new VaccineUpdateResponse(-2);
             }
-            return callableStatement.executeUpdate();
+            return new VaccineUpdateResponse(callableStatement.executeUpdate());
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new VaccineUpdateResponse(ex);
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     /**
@@ -330,7 +332,7 @@ public class DBOperations {
      * @return 1 updated, 0 not updated, -2 flag is not correct, -1 if catches
      * SQLException
      */
-    public synchronized int update_KKK(Baby baby) {
+    public synchronized VaccineUpdateResponse update_KKK(Baby baby) {
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.UPDATE_KKK);
@@ -343,15 +345,14 @@ public class DBOperations {
                     callableStatement.setInt(2, Flags.TWO_FLAG);
                     break;
                 default:
-                    return -2;
+                    return new VaccineUpdateResponse(-2);
             }
-            return callableStatement.executeUpdate();
+            return new VaccineUpdateResponse(callableStatement.executeUpdate());
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new VaccineUpdateResponse(ex);
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     /**
@@ -361,7 +362,7 @@ public class DBOperations {
      * @return 1 updated, 0 not updated, -2 flag is not correct, -1 if catches
      * SQLException
      */
-    public synchronized int update_KPA(Baby baby) {
+    public synchronized VaccineUpdateResponse update_KPA(Baby baby) {
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.UPDATE_KPA);
@@ -380,15 +381,14 @@ public class DBOperations {
                     callableStatement.setInt(2, Flags.FOUR_FLAG);
                     break;
                 default:
-                    return -2;
+                    return new VaccineUpdateResponse(-2);
             }
-            return callableStatement.executeUpdate();
+            return new VaccineUpdateResponse(callableStatement.executeUpdate());
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new VaccineUpdateResponse(ex);
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     /**
@@ -398,7 +398,7 @@ public class DBOperations {
      * @return 1 updated, 0 not updated, -2 flag is not correct, -1 if catches
      * SQLException
      */
-    public synchronized int update_OPA(Baby baby) {
+    public synchronized VaccineUpdateResponse update_OPA(Baby baby) {
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.UPDATE_OPA);
@@ -411,15 +411,14 @@ public class DBOperations {
                     callableStatement.setInt(2, Flags.TWO_FLAG);
                     break;
                 default:
-                    return -2;
+                    return new VaccineUpdateResponse(-2);
             }
-            return callableStatement.executeUpdate();
+            return new VaccineUpdateResponse(callableStatement.executeUpdate());
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new VaccineUpdateResponse(ex);
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     /**
@@ -429,7 +428,7 @@ public class DBOperations {
      * @return 1 updated, 0 not updated, -2 flag is not correct, -1 if catches
      * SQLException
      */
-    public synchronized int update_RVA(Baby baby) {
+    public synchronized VaccineUpdateResponse update_RVA(Baby baby) {
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.UPDATE_RVA);
@@ -445,15 +444,14 @@ public class DBOperations {
                     callableStatement.setInt(2, Flags.THREE_FLAG);
                     break;
                 default:
-                    return -2;
+                    return new VaccineUpdateResponse(-2);
             }
-            return callableStatement.executeUpdate();
+            return new VaccineUpdateResponse(callableStatement.executeUpdate());
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new VaccineUpdateResponse(ex);
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     /**
@@ -463,7 +461,7 @@ public class DBOperations {
      * @return 1 updated, 0 not updated, -2 flag is not correct, -1 if catches
      * SQLException
      */
-    public synchronized int update_Vaccines(Baby baby) {
+    public synchronized VaccineUpdateResponse update_Vaccines(Baby baby) {
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.UPDATE_VACCINES);
@@ -488,39 +486,35 @@ public class DBOperations {
                     callableStatement.setInt(2, Flags.SIX_FLAG);
                     break;
                 default:
-                    return -2;
+                    return new VaccineUpdateResponse(-2);
             }
-            return callableStatement.executeUpdate();
+            return new VaccineUpdateResponse(callableStatement.executeUpdate());
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new VaccineUpdateResponse(ex);
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     /**
      * Adds comment written by user
      *
-     * @param username of wrote comment
-     * @param vaccine_name commented vaccine name
      * @param comment written comment
      * @return 1 updated, 0 not updated, -1 if catches SQLException
      */
-    public synchronized int addComment(String username, String vaccine_name, String comment) {
+    public synchronized AddCommentResponse addComment(Comment comment) {
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.ADD_COMMENT);
-            callableStatement.setString(1, username.trim());
-            callableStatement.setString(2, vaccine_name.trim());
-            callableStatement.setString(3, comment);
-            return callableStatement.executeUpdate();
+            callableStatement.setString(1, comment.getUsername().trim());
+            callableStatement.setString(2, comment.getVaccine_name().trim());
+            callableStatement.setString(3, comment.getComment().trim());
+            return new AddCommentResponse(callableStatement.executeUpdate());
         } catch (SQLException ex) {
-            Logger.getLogger((DBOperations.class.getName())).log(Level.SEVERE, null, ex);
+            return new AddCommentResponse(ex);
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     /**
@@ -571,7 +565,8 @@ public class DBOperations {
                 return statusResponses;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            statusResponses.add(new VaccineStatusResponse(ex));
+            return statusResponses;
         } finally {
             closeEverything();
         }
@@ -585,7 +580,7 @@ public class DBOperations {
      * @return 1 updated, 0 not updated, -1 if catches SQLException, -2 if user
      * not available
      */
-    public synchronized int forgottenPassword(User user) {
+    public synchronized PasswordUpdateResponse forgottenPassword(User user) {
         try {
             int userAvailable = -2;
             establishConnection();
@@ -601,16 +596,15 @@ public class DBOperations {
                 callableStatement = connection.prepareCall(DbStoredProcedures.FORGOTTEN_PASSWORD);
                 callableStatement.setString(1, user.getUsername());
                 callableStatement.setString(2, passToHash(user.getPassword()));
-                return callableStatement.executeUpdate();
+                return new PasswordUpdateResponse(callableStatement.executeUpdate());
             } else {
-                return userAvailable;
+                return new PasswordUpdateResponse(userAvailable);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return new PasswordUpdateResponse(ex);
         } finally {
             closeEverything();
         }
-        return -1;
     }
 
     /**
@@ -636,11 +630,11 @@ public class DBOperations {
             }
             return comments;
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            comments.add(new Comment(ex));
+            return comments;
         } finally {
             closeEverything();
         }
-        return null;
     }
 
     /**
@@ -664,11 +658,11 @@ public class DBOperations {
             }
             return babies;
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            babies.add(new Baby(ex));
+            return babies;
         } finally {
             closeEverything();
         }
-        return null;
     }
 
     /**
@@ -952,11 +946,11 @@ public class DBOperations {
             }
             return vaccines;
         } catch (SQLException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            vaccines.add(new Vaccine(ex));
+            return vaccines;
         } finally {
             closeEverything();
         }
-        return null;
     }
 
     /**
@@ -1015,7 +1009,8 @@ public class DBOperations {
                 return dateResponses;
             }
         } catch (SQLException e) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, e);
+            dateResponses.add(new VaccineDateResponse(e));
+            return dateResponses;
         } finally {
             closeEverything();
         }
@@ -1029,12 +1024,12 @@ public class DBOperations {
      * @param user
      * @return 10 sent successfully, -2 if catches MessagingException
      */
-    public synchronized int sendMailToUser(User user) {
+    public synchronized SendMailResponse sendMailToUser(User user) {
         String verificationCode = GenerateVerificationCode.getVerificationCode();
         if (!Objects.equals(updateVerificationCodeInDB(user.getEmail(), verificationCode), 0)) {
             return sendMail.sendMailTo(user.getEmail(), verificationCode);
         }
-        return -2;
+        return new SendMailResponse(-2);
     }
 
     /**
