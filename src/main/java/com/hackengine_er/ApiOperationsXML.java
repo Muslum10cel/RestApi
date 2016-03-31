@@ -41,7 +41,7 @@ import javax.ws.rs.core.MediaType;
 @Path("vaccineapp/xml")
 @Produces(MediaType.APPLICATION_XML)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ApiOperationXML {
+public class ApiOperationsXML {
 
     private static final DBOperations dbOperations = new DBOperations();
 
