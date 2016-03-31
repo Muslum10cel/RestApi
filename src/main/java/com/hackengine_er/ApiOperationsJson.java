@@ -18,6 +18,7 @@ import com.hackengine_er.models.SendMailResponse;
 import com.hackengine_er.models.UploadImageResponse;
 import com.hackengine_er.models.Vaccine;
 import com.hackengine_er.models.VaccineDateResponse;
+import com.hackengine_er.models.VaccineResponse;
 import com.hackengine_er.models.VaccineStatusResponse;
 import com.hackengine_er.models.VaccineUpdateResponse;
 import com.hackengine_er.models.VerificationCode;
@@ -142,7 +143,7 @@ public class ApiOperationsJson {
 
     @GET
     @Path("/getAllVaccineNames")
-    public List<Vaccine> getAllVaccineNames() {
+    public List<VaccineResponse> getAllVaccineNames() {
         return dbOperations.getAllVaccineNames();
     }
 

@@ -20,6 +20,7 @@ import com.hackengine_er.models.UploadImageResponse;
 import com.hackengine_er.models.User;
 import com.hackengine_er.models.Vaccine;
 import com.hackengine_er.models.VaccineDateResponse;
+import com.hackengine_er.models.VaccineResponse;
 import com.hackengine_er.models.VaccineStatusResponse;
 import com.hackengine_er.models.VaccineUpdateResponse;
 import com.hackengine_er.models.VerificationCode;
@@ -936,20 +937,20 @@ public class DBOperations {
      * @return an object added vaccine names, null if catches SQLException or
      * JSONException
      */
-    public List<Vaccine> getAllVaccineNames() {
-        final List<Vaccine> vaccines = new ArrayList<>();
+    public List<VaccineResponse> getAllVaccineNames() {
+        final List<VaccineResponse> vaccines = new ArrayList<>();
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.GET_ALL_VACCINE_NAMES);
             resultSet = callableStatement.executeQuery();
             if (!Objects.equals(resultSet, null)) {
                 while (resultSet.next()) {
-                    vaccines.add(new Vaccine(resultSet.getString(1)));
+                    vaccines.add(new VaccineResponse(resultSet.getString(1)));
                 }
             }
             return vaccines;
         } catch (SQLException ex) {
-            vaccines.add(new Vaccine(ex));
+            vaccines.add(new VaccineResponse(ex));
             return vaccines;
         } finally {
             closeEverything();
