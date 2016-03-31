@@ -12,6 +12,8 @@ import com.hackengine.models.LogInResponse;
 import com.hackengine.models.User;
 import com.hackengine.models.RegisterUserResponse;
 import com.hackengine.models.Vaccine;
+import com.hackengine.models.VaccineDateResponse;
+import com.hackengine.models.VaccineStatusResponse;
 import com.hackengine.muslumyusuf.DBOperations;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -67,6 +69,18 @@ public class ApiOperations {
     @Path("/getAllVaccineNames")
     public List<Vaccine> getAllVaccineNames() {
         return dbOperations.getAllVaccineNames();
+    }
+
+    @GET
+    @Path("/getVaccineDateDetails/{baby_id}")
+    public List<VaccineDateResponse> getVaccineDateDetailsOfBaby(@PathParam("baby_id") int baby_id) {
+        return dbOperations.getVaccinesDateDetailsOfBaby(baby_id);
+    }
+
+    @GET
+    @Path("/getVaccineStatusDetails/{baby_id}")
+    public List<VaccineStatusResponse> getVaccineStatusDetailsOfBaby(@PathParam("baby_id") int baby_id) {
+        return dbOperations.completedAndIncompletedVaccines(baby_id);
     }
 
 }

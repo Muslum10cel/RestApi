@@ -12,6 +12,8 @@ import com.hackengine.models.Comment;
 import com.hackengine.models.Image;
 import com.hackengine.models.User;
 import com.hackengine.models.Vaccine;
+import com.hackengine.models.VaccineDateResponse;
+import com.hackengine.models.VaccineStatusResponse;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.io.ByteArrayInputStream;
@@ -52,6 +54,7 @@ public class DBOperations {
         dataSource.setPassword(Configuration.getPASSWORD());
     }
 
+    //private static final List<Vaccine> vaccines = new ArrayList<>();
     private static Connection connection = null;
     private static PreparedStatement preparedStatement = null;
     private static CallableStatement callableStatement = null;
@@ -527,53 +530,54 @@ public class DBOperations {
      * @return an object includes completion details of baby or null if catches
      * SQLException or JSONException
      */
-//    public synchronized JSONObject completedAndIncompletedVaccines(int baby_id) {
-//        JSONObject jSONObject = new JSONObject();
-//        try {
-//            establishConnection();
-//            callableStatement = connection.prepareCall(DbStoredProcedures.GET_COMPLETED_VACCINES);
-//            callableStatement.setInt(1, baby_id);
-//            resultSet = callableStatement.executeQuery();
-//            if (!Objects.equals(resultSet, null)) {
-//                while (resultSet.next()) {
-//                    jSONObject.put(Tags.BCG, resultSet.getInt(1));
-//                    jSONObject.put(Tags.DaBT_IPA, resultSet.getInt(2));
-//                    jSONObject.put(Tags.VARICELLA, resultSet.getInt(3));
-//                    jSONObject.put(Tags.KMA4, resultSet.getInt(4));
-//                    jSONObject.put(Tags.HPA, resultSet.getInt(5));
-//                    jSONObject.put(Tags.INFLUENZA, resultSet.getInt(6));
-//                    jSONObject.put(Tags.FIRST_RVA, resultSet.getInt(7));
-//                    jSONObject.put(Tags.SECOND_RVA, resultSet.getInt(8));
-//                    jSONObject.put(Tags.THIRD_RVA, resultSet.getInt(9));
-//                    jSONObject.put(Tags.FIRST_OPA, resultSet.getInt(10));
-//                    jSONObject.put(Tags.SECOND_OPA, resultSet.getInt(11));
-//                    jSONObject.put(Tags.FIRST_HEPATIT_A, resultSet.getInt(12));
-//                    jSONObject.put(Tags.SECOND_HEPATIT_A, resultSet.getInt(13));
-//                    jSONObject.put(Tags.FIRST_HEPATIT_B, resultSet.getInt(14));
-//                    jSONObject.put(Tags.SECOND_HEPATIT_B, resultSet.getInt(15));
-//                    jSONObject.put(Tags.THIRD_HEPATIT_B, resultSet.getInt(16));
-//                    jSONObject.put(Tags.FIRST_KKK, resultSet.getInt(17));
-//                    jSONObject.put(Tags.SECOND_KKK, resultSet.getInt(18));
-//                    jSONObject.put(Tags.FIRST_KPA, resultSet.getInt(19));
-//                    jSONObject.put(Tags.SECOND_KPA, resultSet.getInt(20));
-//                    jSONObject.put(Tags.THIRD_KPA, resultSet.getInt(21));
-//                    jSONObject.put(Tags.FOURTH_KPA, resultSet.getInt(22));
-//                    jSONObject.put(Tags.FIRST_DaBT_IPA_HIB, resultSet.getInt(23));
-//                    jSONObject.put(Tags.SECOND_DaBT_IPA_HIB, resultSet.getInt(24));
-//                    jSONObject.put(Tags.THIRD_DaBT_IPA_HIB, resultSet.getInt(25));
-//                    jSONObject.put(Tags.FOURTH_DaBT_IPA_HIB, resultSet.getInt(26));
-//                    jSONObject.put(Tags.FIFTH_DaBT_IPA_HIB, resultSet.getInt(27));
-//                    jSONObject.put(Tags.SIXTH_DaBT_IPA_HIB, resultSet.getInt(28));
-//                    return jSONObject;
-//                }
-//            }
-//        } catch (SQLException | JSONException ex) {
-//            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            closeEverything();
-//        }
-//        return null;
-//    }
+    public synchronized List<VaccineStatusResponse> completedAndIncompletedVaccines(int baby_id) {
+        List<VaccineStatusResponse> statusResponses = new ArrayList<>();
+        try {
+            establishConnection();
+            callableStatement = connection.prepareCall(DbStoredProcedures.GET_COMPLETED_VACCINES);
+            callableStatement.setInt(1, baby_id);
+            resultSet = callableStatement.executeQuery();
+            if (!Objects.equals(resultSet, null)) {
+                while (resultSet.next()) {
+                    statusResponses.add(new VaccineStatusResponse(Tags.BCG, resultSet.getInt(1)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.DaBT_IPA, resultSet.getInt(2)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.VARICELLA, resultSet.getInt(3)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.KMA4, resultSet.getInt(4)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.HPA, resultSet.getInt(5)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.INFLUENZA, resultSet.getInt(6)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.FIRST_RVA, resultSet.getInt(7)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.SECOND_RVA, resultSet.getInt(8)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.THIRD_RVA, resultSet.getInt(9)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.FIRST_OPA, resultSet.getInt(10)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.SECOND_OPA, resultSet.getInt(11)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.FIRST_HEPATIT_A, resultSet.getInt(12)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.SECOND_HEPATIT_A, resultSet.getInt(13)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.FIRST_HEPATIT_B, resultSet.getInt(14)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.SECOND_HEPATIT_B, resultSet.getInt(15)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.THIRD_HEPATIT_B, resultSet.getInt(16)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.FIRST_KKK, resultSet.getInt(17)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.SECOND_KKK, resultSet.getInt(18)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.FIRST_KPA, resultSet.getInt(19)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.SECOND_KPA, resultSet.getInt(20)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.THIRD_KPA, resultSet.getInt(21)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.FOURTH_KPA, resultSet.getInt(22)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.FIRST_DaBT_IPA_HIB, resultSet.getInt(23)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.SECOND_DaBT_IPA_HIB, resultSet.getInt(24)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.THIRD_DaBT_IPA_HIB, resultSet.getInt(25)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.FOURTH_DaBT_IPA_HIB, resultSet.getInt(26)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.FIFTH_DaBT_IPA_HIB, resultSet.getInt(27)));
+                    statusResponses.add(new VaccineStatusResponse(Tags.SIXTH_DaBT_IPA_HIB, resultSet.getInt(28)));
+                }
+                return statusResponses;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeEverything();
+        }
+        return null;
+    }
+
     /**
      * Updates password of user
      *
@@ -936,7 +940,7 @@ public class DBOperations {
      * JSONException
      */
     public List<Vaccine> getAllVaccineNames() {
-        List<Vaccine> vaccines = new ArrayList<>();
+        final List<Vaccine> vaccines = new ArrayList<>();
         try {
             establishConnection();
             callableStatement = connection.prepareCall(DbStoredProcedures.GET_ALL_VACCINE_NAMES);
@@ -962,62 +966,62 @@ public class DBOperations {
      * @return an object added baby's vaccine details, null if catches
      * SQLException or JSONException
      */
-//    public JSONObject getVaccinesDetailsOfBaby(int baby_id) {
-//        JSONObject jSONObject = new JSONObject();
-//        try {
-//            establishConnection();
-//            callableStatement = connection.prepareCall(DbStoredProcedures.GET_BABY_VACCINES);
-//            callableStatement.setInt(1, baby_id);
-//            resultSet = callableStatement.executeQuery();
-//            if (!Objects.equals(resultSet, null)) {
-//                while (resultSet.next()) {
-//
-//                    jSONObject.put(Tags.BABY_NAME, resultSet.getString(1));
-//                    jSONObject.put(Tags.BCG, resultSet.getString(2));
-//                    jSONObject.put(Tags.VARICELLA, resultSet.getString(3));
-//                    jSONObject.put(Tags.HPA, resultSet.getString(4));
-//                    jSONObject.put(Tags.KMA4, resultSet.getString(5));
-//                    jSONObject.put(Tags.DaBT_IPA, resultSet.getString(6));
-//                    jSONObject.put(Tags.INFLUENZA, resultSet.getString(7));
-//
-//                    jSONObject.put(Tags.FIRST_DaBT_IPA_HIB, resultSet.getString(8));
-//                    jSONObject.put(Tags.SECOND_DaBT_IPA_HIB, resultSet.getString(9));
-//                    jSONObject.put(Tags.THIRD_DaBT_IPA_HIB, resultSet.getString(10));
-//                    jSONObject.put(Tags.FOURTH_DaBT_IPA_HIB, resultSet.getString(11));
-//                    jSONObject.put(Tags.FIFTH_DaBT_IPA_HIB, resultSet.getString(12));
-//                    jSONObject.put(Tags.SIXTH_DaBT_IPA_HIB, resultSet.getString(13));
-//
-//                    jSONObject.put(Tags.FIRST_HEPATIT_B, resultSet.getString(14));
-//                    jSONObject.put(Tags.SECOND_HEPATIT_B, resultSet.getString(15));
-//                    jSONObject.put(Tags.THIRD_HEPATIT_B, resultSet.getString(16));
-//
-//                    jSONObject.put(Tags.FIRST_KPA, resultSet.getString(17));
-//                    jSONObject.put(Tags.SECOND_KPA, resultSet.getString(18));
-//                    jSONObject.put(Tags.THIRD_KPA, resultSet.getString(19));
-//                    jSONObject.put(Tags.FOURTH_KPA, resultSet.getString(20));
-//
-//                    jSONObject.put(Tags.FIRST_KKK, resultSet.getString(21));
-//                    jSONObject.put(Tags.SECOND_KKK, resultSet.getString(22));
-//
-//                    jSONObject.put(Tags.FIRST_RVA, resultSet.getString(23));
-//                    jSONObject.put(Tags.SECOND_RVA, resultSet.getString(24));
-//                    jSONObject.put(Tags.THIRD_RVA, resultSet.getString(25));
-//
-//                    jSONObject.put(Tags.FIRST_HEPATIT_A, resultSet.getString(26));
-//                    jSONObject.put(Tags.SECOND_HEPATIT_A, resultSet.getString(27));
-//
-//                    jSONObject.put(Tags.FIRST_OPA, resultSet.getString(28));
-//                    jSONObject.put(Tags.SECOND_OPA, resultSet.getString(29));
-//                }
-//                return jSONObject;
-//            }
-//        } catch (SQLException | JSONException e) {
-//            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, e);
-//        } finally {
-//            closeEverything();
-//        }
-//        return null;
-//    }
+    public List<VaccineDateResponse> getVaccinesDateDetailsOfBaby(int baby_id) {
+        final List<VaccineDateResponse> dateResponses = new ArrayList<>();
+        try {
+            establishConnection();
+            callableStatement = connection.prepareCall(DbStoredProcedures.GET_BABY_VACCINES);
+            callableStatement.setInt(1, baby_id);
+            resultSet = callableStatement.executeQuery();
+            if (!Objects.equals(resultSet, null)) {
+                while (resultSet.next()) {
+
+                    dateResponses.add(new VaccineDateResponse(Tags.BCG, resultSet.getString(2)));
+                    dateResponses.add(new VaccineDateResponse(Tags.VARICELLA, resultSet.getString(3)));
+                    dateResponses.add(new VaccineDateResponse(Tags.HPA, resultSet.getString(4)));
+                    dateResponses.add(new VaccineDateResponse(Tags.KMA4, resultSet.getString(5)));
+                    dateResponses.add(new VaccineDateResponse(Tags.DaBT_IPA, resultSet.getString(6)));
+                    dateResponses.add(new VaccineDateResponse(Tags.INFLUENZA, resultSet.getString(7)));
+
+                    dateResponses.add(new VaccineDateResponse(Tags.FIRST_DaBT_IPA_HIB, resultSet.getString(8)));
+                    dateResponses.add(new VaccineDateResponse(Tags.SECOND_DaBT_IPA_HIB, resultSet.getString(9)));
+                    dateResponses.add(new VaccineDateResponse(Tags.THIRD_DaBT_IPA_HIB, resultSet.getString(10)));
+                    dateResponses.add(new VaccineDateResponse(Tags.FOURTH_DaBT_IPA_HIB, resultSet.getString(11)));
+                    dateResponses.add(new VaccineDateResponse(Tags.FIFTH_DaBT_IPA_HIB, resultSet.getString(12)));
+                    dateResponses.add(new VaccineDateResponse(Tags.SIXTH_DaBT_IPA_HIB, resultSet.getString(13)));
+
+                    dateResponses.add(new VaccineDateResponse(Tags.FIRST_HEPATIT_B, resultSet.getString(14)));
+                    dateResponses.add(new VaccineDateResponse(Tags.SECOND_HEPATIT_B, resultSet.getString(15)));
+                    dateResponses.add(new VaccineDateResponse(Tags.THIRD_HEPATIT_B, resultSet.getString(16)));
+
+                    dateResponses.add(new VaccineDateResponse(Tags.FIRST_KPA, resultSet.getString(17)));
+                    dateResponses.add(new VaccineDateResponse(Tags.SECOND_KPA, resultSet.getString(18)));
+                    dateResponses.add(new VaccineDateResponse(Tags.THIRD_KPA, resultSet.getString(19)));
+                    dateResponses.add(new VaccineDateResponse(Tags.FOURTH_KPA, resultSet.getString(20)));
+
+                    dateResponses.add(new VaccineDateResponse(Tags.FIRST_KKK, resultSet.getString(21)));
+                    dateResponses.add(new VaccineDateResponse(Tags.SECOND_KKK, resultSet.getString(22)));
+
+                    dateResponses.add(new VaccineDateResponse(Tags.FIRST_RVA, resultSet.getString(23)));
+                    dateResponses.add(new VaccineDateResponse(Tags.SECOND_RVA, resultSet.getString(24)));
+                    dateResponses.add(new VaccineDateResponse(Tags.THIRD_RVA, resultSet.getString(25)));
+
+                    dateResponses.add(new VaccineDateResponse(Tags.FIRST_HEPATIT_A, resultSet.getString(26)));
+                    dateResponses.add(new VaccineDateResponse(Tags.SECOND_HEPATIT_A, resultSet.getString(27)));
+
+                    dateResponses.add(new VaccineDateResponse(Tags.FIRST_OPA, resultSet.getString(28)));
+                    dateResponses.add(new VaccineDateResponse(Tags.SECOND_OPA, resultSet.getString(29)));
+                }
+                return dateResponses;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            closeEverything();
+        }
+        return null;
+    }
+
     /**
      * If user forgets his/her password this method will sent a verification
      * code to the user's e-mail for changing password
