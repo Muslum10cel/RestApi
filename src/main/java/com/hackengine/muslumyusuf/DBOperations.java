@@ -22,6 +22,8 @@ import com.hackengine.models.Vaccine;
 import com.hackengine.models.VaccineDateResponse;
 import com.hackengine.models.VaccineStatusResponse;
 import com.hackengine.models.VaccineUpdateResponse;
+import com.hackengine.models.VerificationCode;
+import com.hackengine.models.VerificationCodeResponse;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.io.ByteArrayInputStream;
@@ -1060,28 +1062,28 @@ public class DBOperations {
      * Checks verification code is valid or not sent by system to user's e-mail
      * address
      *
-     * @param user
+     * @param code
      * @return 1 validated code, 0 not validated code, -2 if catches
      * SQLException
      */
-    public synchronized int checkVerificationCode(User user) {
+    public synchronized VerificationCodeResponse checkVerificationCode(VerificationCode code) {
         try {
             establishConnection();
             preparedStatement = connection.prepareStatement(DbFunctions.VALIDATE_VERIFICATION_CODE);
-            preparedStatement.setString(1, String.valueOf(user.getVerificationCode()));
-            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(1, code.getVerificationcode());
+            preparedStatement.setString(2, code.getEmail());
             resultSet = preparedStatement.executeQuery();
             if (!Objects.equals(resultSet, null)) {
                 while (resultSet.next()) {
-                    return resultSet.getInt(1);
+                    return new VerificationCodeResponse(resultSet.getInt(1));
                 }
             }
         } catch (SQLException e) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, e);
+            return new VerificationCodeResponse(e);
         } finally {
             closeEverything();
         }
-        return -2;
+        return new VerificationCodeResponse(-2);
     }
 
     /**

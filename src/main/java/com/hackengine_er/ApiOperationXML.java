@@ -9,15 +9,19 @@ import com.hackengine.models.AddBabyResponse;
 import com.hackengine.models.AddCommentResponse;
 import com.hackengine.models.Baby;
 import com.hackengine.models.Comment;
+import com.hackengine.models.Image;
 import com.hackengine.models.LogInResponse;
 import com.hackengine.models.PasswordUpdateResponse;
 import com.hackengine.models.User;
 import com.hackengine.models.RegisterUserResponse;
 import com.hackengine.models.SendMailResponse;
+import com.hackengine.models.UploadImageResponse;
 import com.hackengine.models.Vaccine;
 import com.hackengine.models.VaccineDateResponse;
 import com.hackengine.models.VaccineStatusResponse;
 import com.hackengine.models.VaccineUpdateResponse;
+import com.hackengine.models.VerificationCode;
+import com.hackengine.models.VerificationCodeResponse;
 import com.hackengine.muslumyusuf.DBOperations;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -33,10 +37,10 @@ import javax.ws.rs.core.MediaType;
  *
  * @author muslumoncel
  */
-@Path("vaccineapp")
-@Produces(MediaType.APPLICATION_JSON)
+@Path("vaccineapp/xml")
+@Produces(MediaType.APPLICATION_XML)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ApiOperations {
+public class ApiOperationXML {
 
     private static final DBOperations dbOperations = new DBOperations();
 
@@ -152,5 +156,17 @@ public class ApiOperations {
     @Path("/sendMailToUser")
     public SendMailResponse sendMailToUser(User user) {
         return dbOperations.sendMailToUser(user);
+    }
+
+    @POST
+    @Path("/checkVerificationCode")
+    public VerificationCodeResponse checkVerificationCode(VerificationCode code) {
+        return dbOperations.checkVerificationCode(code);
+    }
+
+    @POST
+    @Path("/uploadImage")
+    public UploadImageResponse uploadImage(Image image) {
+        return dbOperations.uploadImage(image);
     }
 }
