@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hackengine.muslumyusuf;
+package com.hackengine_er.muslumyusuf;
 
-import com.hackengine.initialize.InitProperties;
-import com.hackengine.models.SendMailResponse;
+import com.hackengine_er.initialize.InitProperties;
+import com.hackengine_er.models.SendMailResponse;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;

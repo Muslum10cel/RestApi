@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hackengine.models;
+package com.hackengine_er.models;
 
 import java.sql.SQLException;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,28 +13,28 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author muslumoncel
  */
 @XmlRootElement
-public class VaccineUpdateResponse {
+public class AddCommentResponse {
 
-    private int vaccine_update_response;
+    private int add_comment_status;
     private SQLException exception;
 
-    public VaccineUpdateResponse() {
+    public AddCommentResponse(int add_comment_status) {
+        this.add_comment_status = add_comment_status;
     }
 
-    public VaccineUpdateResponse(SQLException exception) {
+    public AddCommentResponse(SQLException exception) {
         this.exception = exception;
     }
 
-    public VaccineUpdateResponse(int vaccine_update_response) {
-        this.vaccine_update_response = vaccine_update_response;
+    public AddCommentResponse() {
     }
 
-    public int getVaccine_update_response() {
-        return vaccine_update_response;
+    public int getAdd_comment_status() {
+        return add_comment_status;
     }
 
-    public void setVaccine_update_response(int vaccine_update_response) {
-        this.vaccine_update_response = vaccine_update_response;
+    public void setAdd_comment_status(int add_comment_status) {
+        this.add_comment_status = add_comment_status;
     }
 
     public SQLException getException() {
@@ -44,5 +44,4 @@ public class VaccineUpdateResponse {
     public void setException(SQLException exception) {
         this.exception = exception;
     }
-
 }

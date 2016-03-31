@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hackengine.initialize;
+package com.hackengine_er.initialize;
 
-import com.hackengine.muslumyusuf.DBOperations;
+import com.hackengine_er.muslumyusuf.DBOperations;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

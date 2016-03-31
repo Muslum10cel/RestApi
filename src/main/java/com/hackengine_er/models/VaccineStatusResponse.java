@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hackengine.models;
+package com.hackengine_er.models;
 
 import java.sql.SQLException;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,50 +13,45 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author muslumoncel
  */
 @XmlRootElement
-public class Vaccine {
+public class VaccineStatusResponse {
 
     private String vaccine_name;
-    private int begin, last;
+    private int status;
     private SQLException exception;
 
-    public Vaccine(String vaccine_name) {
-        this.vaccine_name = vaccine_name;
+    public VaccineStatusResponse() {
     }
 
-    public Vaccine(SQLException exception) {
+    public VaccineStatusResponse(SQLException exception) {
         this.exception = exception;
     }
 
-    public Vaccine(String vaccine_name, int begin, int last) {
+    public VaccineStatusResponse(String vaccine_name, int status) {
         this.vaccine_name = vaccine_name;
-        this.begin = begin;
-        this.last = last;
+        this.status = status;
     }
 
-    public Vaccine() {
-    }
-
-    public int getBegin() {
-        return begin;
-    }
-
-    public int getLast() {
-        return last;
+    public int getStatus() {
+        return status;
     }
 
     public String getVaccine_name() {
         return vaccine_name;
     }
 
-    public void setBegin(int begin) {
-        this.begin = begin;
-    }
-
-    public void setLast(int last) {
-        this.last = last;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public void setVaccine_name(String vaccine_name) {
         this.vaccine_name = vaccine_name;
+    }
+
+    public SQLException getException() {
+        return exception;
+    }
+
+    public void setException(SQLException exception) {
+        this.exception = exception;
     }
 }

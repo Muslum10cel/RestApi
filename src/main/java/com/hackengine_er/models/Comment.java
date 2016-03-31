@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hackengine.models;
+package com.hackengine_er.models;
 
 import java.sql.SQLException;
 import java.util.Date;
