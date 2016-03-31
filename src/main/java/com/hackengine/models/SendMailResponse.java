@@ -5,7 +5,6 @@
  */
 package com.hackengine.models;
 
-import java.sql.SQLException;
 import javax.mail.MessagingException;
 import javax.xml.bind.annotation.XmlRootElement;
 
