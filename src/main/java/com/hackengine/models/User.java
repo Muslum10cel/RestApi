@@ -20,8 +20,8 @@ public class User {
     public User() {
     }
 
-    public User(String email) {
-        this.email = email;
+    public User(String emailOrUser) {
+        this.email = emailOrUser;
     }
 
     public User(String username, String password) {

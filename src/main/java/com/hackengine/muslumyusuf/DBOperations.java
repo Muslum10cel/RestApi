@@ -642,34 +642,31 @@ public class DBOperations {
     /**
      * Gets babies of logged in user
      *
-     * @param username of logged in
+     * @param user
      * @return an object includes baby names of null if catches SQLException or
      * JSONException
      */
-//    public synchronized JSONObject getBabies(String username) {
-//        JSONObject jsonObject = new JSONObject();
-//        JSONArray jSONArray = new JSONArray();
-//        try {
-//            establishConnection();
-//            callableStatement = connection.prepareCall(DbStoredProcedures.GET_BABIES);
-//            callableStatement.setString(1, username);
-//            resultSet = callableStatement.executeQuery();
-//            if (!Objects.equals(resultSet, null)) {
-//                while (resultSet.next()) {
-//                    JSONObject jSONObject = new JSONObject();
-//                    jSONObject.put(Tags.BABY_ID, resultSet.getInt(1));
-//                    jSONObject.put(Tags.BABY_NAME, resultSet.getString(2));
-//                    jSONArray.put(jSONObject);
-//                }
-//            }
-//            return jsonObject.put(Tags.BABIES, jSONArray);
-//        } catch (SQLException | JSONException ex) {
-//            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            closeEverything();
-//        }
-//        return null;
-//    }
+    public synchronized List<Baby> getBabies(User user) {
+        List<Baby> babies = new ArrayList<>();
+        try {
+            establishConnection();
+            callableStatement = connection.prepareCall(DbStoredProcedures.GET_BABIES);
+            callableStatement.setString(1, user.getUsername());
+            resultSet = callableStatement.executeQuery();
+            if (!Objects.equals(resultSet, null)) {
+                while (resultSet.next()) {
+                    babies.add(new Baby(resultSet.getInt(1), resultSet.getString(2)));
+                }
+            }
+            return babies;
+        } catch (SQLException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeEverything();
+        }
+        return null;
+    }
+
     /**
      * Closes necessary objects
      */

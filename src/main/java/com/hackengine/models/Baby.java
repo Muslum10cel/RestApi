@@ -25,6 +25,11 @@ public class Baby {
         this.vaccineFlag = vaccineFlag;
     }
 
+    public Baby(int babyID, String baby_name) {
+        this.babyID = babyID;
+        this.baby_name = baby_name;
+    }
+
     public Baby(String username, String baby_name, String date_of_birth) {
         this.username = username;
         this.baby_name = baby_name;
