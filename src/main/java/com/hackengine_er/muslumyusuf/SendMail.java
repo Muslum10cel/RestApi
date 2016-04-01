@@ -6,7 +6,7 @@
 package com.hackengine_er.muslumyusuf;
 
 import com.hackengine_er.initialize.InitProperties;
-import com.hackengine_er.models.SendMailResponse;
+import com.heckengine_er.responses.SendMailResponse;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;

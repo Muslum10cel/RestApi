@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User {
 
-    private String username, password, fullname, email, verificationCode;
+    private String username, password, fullname, email;
 
     public User() {
     }
@@ -26,7 +26,6 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.verificationCode = password;
     }
 
     public User(String username, String password, String fullname, String email) {
@@ -66,13 +65,5 @@ public class User {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
-    }
-
-    public String getVerificationCode() {
-        return verificationCode;
-    }
-
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
     }
 }
