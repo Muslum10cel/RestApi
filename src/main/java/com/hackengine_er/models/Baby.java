@@ -26,16 +26,32 @@ public class Baby {
         this.exception = exception;
     }
 
+    /**
+     * This constructor is used when updating any vaccine
+     * 
+     * @param babyID
+     * @param vaccineFlag
+     */
     public Baby(int babyID, int vaccineFlag) {
         this.babyID = babyID;
         this.vaccineFlag = vaccineFlag;
     }
 
+    
+    
     public Baby(int babyID, String baby_name) {
         this.babyID = babyID;
         this.baby_name = baby_name;
     }
 
+    /**
+     * This constructor is used for adding baby
+     * 
+     * @param username
+     * @param baby_name
+     * @param date_of_birth
+     */
+    
     public Baby(String username, String baby_name, String date_of_birth) {
         this.username = username;
         this.baby_name = baby_name;

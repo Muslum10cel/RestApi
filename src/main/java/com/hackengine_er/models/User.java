@@ -23,11 +23,25 @@ public class User {
         this.email = email;
     }
 
+    /**
+     * This constructor is used for log in
+     * 
+     * @param username
+     * @param password
+     */
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
+    /**
+     * This constructor is used for register
+     * 
+     * @param username
+     * @param password
+     * @param fullname
+     * @param email
+     */
     public User(String username, String password, String fullname, String email) {
         this.username = username;
         this.password = password;
